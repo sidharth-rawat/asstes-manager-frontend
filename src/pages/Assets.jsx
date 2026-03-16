@@ -175,7 +175,8 @@ export default function Assets() {
   const [page, setPage] = useState(1);
   const LIMIT = 20;
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('');       // debounced — sent to API
+  const [inputValue, setInputValue] = useState(''); // immediate — shown in input
   const [filterStatus, setFilterStatus] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterLocation, setFilterLocation] = useState('');
@@ -231,8 +232,18 @@ export default function Assets() {
   }, [isManager]);
 
   function handleSearchChange(val) {
+    setInputValue(val);                   // update input immediately (controlled)
     clearTimeout(searchTimer.current);
-    searchTimer.current = setTimeout(() => { setSearch(val); setPage(1); }, 400);
+    searchTimer.current = setTimeout(() => { setSearch(val); setPage(1); }, 400); // debounce API call
+  }
+
+  function clearFilters() {
+    setInputValue('');
+    setSearch('');
+    setFilterStatus('');
+    setFilterCategory('');
+    setFilterLocation('');
+    setPage(1);
   }
 
   function openAdd() { setForm(EMPTY_FORM); setAddOpen(true); }
@@ -359,6 +370,7 @@ export default function Assets() {
             <Input
               className="pl-9"
               placeholder="Search name or serial…"
+              value={inputValue}
               onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
@@ -374,8 +386,8 @@ export default function Assets() {
             <option value="">All Locations</option>
             {locations.map((l) => <option key={l._id} value={l._id}>[{l.type}] {l.name}</option>)}
           </select>
-          {(filterStatus || filterCategory || filterLocation || search) && (
-            <Button variant="outline" size="sm" onClick={() => { setFilterStatus(''); setFilterCategory(''); setFilterLocation(''); setSearch(''); setPage(1); }}>
+          {(filterStatus || filterCategory || filterLocation || inputValue) && (
+            <Button variant="outline" size="sm" onClick={clearFilters}>
               <X size={14} /> Clear
             </Button>
           )}
