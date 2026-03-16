@@ -18,13 +18,12 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      // Token expired / invalid — force logout
+      // Token expired / invalid — clear storage and let AuthContext re-render
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      // Only redirect if not already on login page
-      if (!window.location.pathname.startsWith('/login')) {
-        window.location.href = '/login';
-      }
+      // Dispatch a custom event — AuthContext listens and calls setUser(null)
+      // which triggers React Router redirect, without cancelling in-flight requests
+      window.dispatchEvent(new Event('auth:logout'));
     }
     return Promise.reject(err);
   }

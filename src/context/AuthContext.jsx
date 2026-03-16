@@ -35,6 +35,14 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  // Listen for 401 from axios interceptor — update state so React Router redirects
+  // without a hard page reload (which would cancel in-flight requests)
+  useEffect(() => {
+    const handler = () => setUser(null);
+    window.addEventListener('auth:logout', handler);
+    return () => window.removeEventListener('auth:logout', handler);
+  }, []);
+
   const login = useCallback(async (email, password) => {
     const res = await api.post('/users/login', { email, password });
     const { token, user: userData } = res.data;
