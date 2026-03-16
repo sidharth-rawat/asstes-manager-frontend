@@ -7,6 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+const DEMO_CREDENTIALS = [
+  { label: 'Admin', email: 'admin@demo.com', password: 'Admin@123' },
+  { label: 'Viewer', email: 'viewer@demo.com', password: 'Viewer@123' },
+];
+
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -93,7 +98,25 @@ export default function Login() {
             </Button>
           </form>
 
-          <p className="mt-5 text-center text-xs text-muted-foreground">
+          {/* Demo credentials */}
+          <div className="mt-6 rounded-lg bg-slate-50 border border-slate-200 p-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Demo credentials</p>
+            <div className="space-y-2">
+              {DEMO_CREDENTIALS.map((cred) => (
+                <button
+                  key={cred.label}
+                  type="button"
+                  onClick={() => setForm({ email: cred.email, password: cred.password })}
+                  className="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-xs bg-white border border-slate-200 hover:border-primary hover:bg-primary/5 transition-colors"
+                >
+                  <span className="font-medium text-slate-700">{cred.label}</span>
+                  <span className="text-slate-400 font-mono">{cred.email}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-4 text-center text-xs text-muted-foreground">
             First time?{' '}
             <a
               href="/register"
