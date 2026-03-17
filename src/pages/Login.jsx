@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const DEMO_CREDENTIALS = [
-  { label: 'Admin', email: 'admin@demo.com', password: 'Admin@123' },
-  { label: 'Viewer', email: 'viewer@demo.com', password: 'Viewer@123' },
+  { label: 'Admin', email: 'admin@company.com', password: "Admin1234" },
+  { label: 'Viewer', email: "Test@compay.com", password: "Test1234" },
 ];
 
 export default function Login() {
@@ -116,7 +116,7 @@ export default function Login() {
             </div>
           </div>
 
-          <p className="mt-4 text-center text-xs text-muted-foreground">
+          {/* <p className="mt-4 text-center text-xs text-muted-foreground">
             First time?{' '}
             <a
               href="/register"
@@ -125,7 +125,7 @@ export default function Login() {
             >
               Contact your administrator
             </a>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
